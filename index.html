@@ -146,13 +146,16 @@
         
         .modal-content {
             background-color: white;
-            margin: 50% auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             padding: 30px;
             border-radius: 15px;
             width: 80%;
             max-width: 400px;
             text-align: center;
-            transform: translateY(-50%);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
         
         .modal h3 {
@@ -207,7 +210,7 @@
         <div class="status" id="status"></div>
         
         <div class="map-container" id="mapContainer">
-            <img src="siteplan.png" 
+            <img src="gartenplan.png" 
                  alt="Botanischer Garten Lageplan" 
                  class="map-image" 
                  id="mapImage">
@@ -215,7 +218,6 @@
         </div>
     </div>
 
-    <!-- Reset Confirmation Modal -->
     <div id="resetModal" class="modal">
         <div class="modal-content">
             <h3>Alle Punkte löschen?</h3>
@@ -253,34 +255,28 @@
             }
             
             bindEvents() {
-                // Mode buttons
                 this.pointBtn.addEventListener('click', () => this.setMode('point'));
                 this.eraseBtn.addEventListener('click', () => this.setMode('erase'));
                 this.resetBtn.addEventListener('click', () => this.showResetModal());
                 
-                // Map interaction
                 this.mapContainer.addEventListener('click', (e) => this.handleMapClick(e));
                 this.mapContainer.addEventListener('touchstart', (e) => this.handleMapTouch(e));
                 
-                // Reset modal
                 this.confirmReset.addEventListener('click', () => this.resetAllPoints());
                 this.cancelReset.addEventListener('click', () => this.hideResetModal());
                 this.resetModal.addEventListener('click', (e) => {
                     if (e.target === this.resetModal) this.hideResetModal();
                 });
                 
-                // Prevent scrolling on touch devices
                 document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
             }
             
             setMode(mode) {
                 this.currentMode = mode;
                 
-                // Update button states
                 this.pointBtn.classList.toggle('active', mode === 'point');
                 this.eraseBtn.classList.toggle('active', mode === 'erase');
                 
-                // Show status
                 if (mode === 'point') {
                     this.showStatus('Punkt-Modus: Tippe zum Setzen von Punkten', 2000);
                 } else if (mode === 'erase') {
@@ -384,7 +380,6 @@
             }
         }
         
-        // Initialize the interactive map when page loads
         document.addEventListener('DOMContentLoaded', () => {
             new InteractiveMap();
         });
